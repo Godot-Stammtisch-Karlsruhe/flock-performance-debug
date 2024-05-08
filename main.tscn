@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://d0by477bs5kds"]
+
+[ext_resource type="PackedScene" uid="uid://cp5v0v231gjt8" path="res://boid.tscn" id="1_n5p2q"]
+[ext_resource type="Script" path="res://main.gd" id="1_q7i56"]
+[ext_resource type="Script" path="res://component_lib/camera/camera_keyboard_move.gd" id="3_rvnhf"]
+[ext_resource type="Script" path="res://component_lib/camera/camera_mouse_wheel_zoom.gd" id="4_sfdlr"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_q7i56")
+spawn_scene = ExtResource("1_n5p2q")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.7, 0.7)
+drag_left_margin = 0.4
+drag_top_margin = 0.4
+drag_right_margin = 0.4
+drag_bottom_margin = 0.4
+
+[node name="CameraKeyboardMove" type="Node" parent="Camera2D"]
+script = ExtResource("3_rvnhf")
+speed = 5000.0
+
+[node name="CameraMouseWheelZoom" type="Node" parent="Camera2D"]
+script = ExtResource("4_sfdlr")

@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://cp5v0v231gjt8"]
+
+[ext_resource type="Script" path="res://boid/NeighborScanner.gd" id="1_1qr27"]
+[ext_resource type="Script" path="res://boid/Separation.gd" id="3_hqwuq"]
+[ext_resource type="Script" path="res://component_lib/movement/static_forward_move.gd" id="3_jgibj"]
+[ext_resource type="Script" path="res://boid/Steer.gd" id="4_4b8sh"]
+[ext_resource type="Script" path="res://boid/Alignment.gd" id="4_bh33b"]
+[ext_resource type="Script" path="res://boid/Cohesion.gd" id="4_jw0mi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_347sb"]
+size = Vector2(256, 256)
+
+[node name="Boid" type="Node2D"]
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+rotation = 1.5708
+color = Color(0.458824, 0.654902, 0.262745, 1)
+polygon = PackedVector2Array(0, -24, -16, 16, 0, 8, 16, 16)
+
+[node name="NeighborScanner" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_1qr27")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="NeighborScanner"]
+shape = SubResource("RectangleShape2D_347sb")
+
+[node name="Separation" type="Node" parent="." node_paths=PackedStringArray("scanner")]
+script = ExtResource("3_hqwuq")
+scanner = NodePath("../NeighborScanner")
+
+[node name="Alignment" type="Node" parent="." node_paths=PackedStringArray("scanner")]
+script = ExtResource("4_bh33b")
+scanner = NodePath("../NeighborScanner")
+
+[node name="Cohesion" type="Node" parent="." node_paths=PackedStringArray("scanner")]
+script = ExtResource("4_jw0mi")
+scanner = NodePath("../NeighborScanner")
+
+[node name="Steer" type="Node" parent="." node_paths=PackedStringArray("separation", "alignment", "cohesion", "move")]
+script = ExtResource("4_4b8sh")
+separation = NodePath("../Separation")
+alignment = NodePath("../Alignment")
+cohesion = NodePath("../Cohesion")
+move = NodePath("../StaticForwardMove")
+
+[node name="StaticForwardMove" type="Node" parent="."]
+script = ExtResource("3_jgibj")
+speed = 100.0
